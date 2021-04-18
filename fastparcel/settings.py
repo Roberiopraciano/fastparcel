@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'bootstrap4'
+    #'core',
+    'bootstrap4',
+    'social_django',
+    'core.apps.CoreConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -49,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.CustomSocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'fastparcel.urls'
@@ -127,3 +131,35 @@ LOGIN_REDIRECT_URL='/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.google.GoogleOAuth',
+)
+
+SOCIAL_AUTH_FACEBOOK_KEY = "368822641040675"
+SOCIAL_AUTH_FACEBOOK_SECRET = "89b0cd59226d2c980325c94fd96308d1"
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "1012785807866-4s0r3ie4pl07bis1hj4atbo6iobdltjl.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "5sqWpDDdv1Ta3WLALzdj3Z7t"
+SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = { 'fields': 'id, name, email'}
+
+
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/error_page/'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'berpdev@gmail.com'
+EMAIL_HOST_PASSWORD = '@omiasen715012'
+DEFAULT_FROM_EMAIL = 'Fast Parcel <no-reply@fastparcel.localhost>'

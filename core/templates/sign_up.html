@@ -19,15 +19,18 @@
 
                         </b>
                     </h4>
-                    <form method="POST"></form>
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    {% bootstrap_label "Email" %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <button type="submit" class="btn btn-warning btn-block">Sing Up</button>
+                        <p class="text-center mt-3">
+                            Already have an account? <a href="/sign-in/?next={{request.GET.next}}"><b>Sign In</b></a>
+                        </p>
+                        <br>
+                        <a href="{% url 'social:begin' 'facebook' %}?next={{request.GET.next}}"
+                            class="btn btn-outline-primary btn-block">Sign in With Face Book</a>
+                    </form>
 
-                    <button type="submit" class="btn btn-warning btn-block">Sing Up</button>
-                    <p class="text-center mt-3">
-                        Already have an account? <a href="/sign-in/?next={{request.GET.next}}"><b>Sign In</b></a>
-                    </p>
                 </div>
             </div>
         </div>
