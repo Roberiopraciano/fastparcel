@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'core.middleware.CustomSocialAuthExceptionMiddleware',
+    'core.middleware.ProfileMiddlware'
 ]
 
 ROOT_URLCONF = 'fastparcel.urls'
@@ -127,6 +127,9 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = '/sign-in'
 LOGIN_REDIRECT_URL='/'
+
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -163,3 +166,11 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'berpdev@gmail.com'
 EMAIL_HOST_PASSWORD = '@omiasen715012'
 DEFAULT_FROM_EMAIL = 'Fast Parcel <no-reply@fastparcel.localhost>'
+
+
+FIREBASE_ADMIN_CREDENTIAL= os.path.join(BASE_DIR,"fastparcel-4b1a2-firebase-adminsdk-y6afk-2cb11ba9b7.json") 
+STRIPE_API_SECRET_KEY='sk_test_GH8xdQJTCQkOYJR9BoU9Gkq6'
+STRIPE_API_PUBLIC_KEY='pk_test_8q38pqwjhOMc7pkdDIyBjgFg'
+
+
+GOOGLE_MAP_API_KEY='AIzaSyCIRabSZfJYT-Q0U3zwnBoLQi5UtXYYXyI'

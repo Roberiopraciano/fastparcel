@@ -28,7 +28,9 @@
                         </p>
                         <br>
                         <a href="{% url 'social:begin' 'facebook' %}?next={{request.GET.next}}"
-                            class="btn btn-outline-primary btn-block">Sign in With Face Book</a>
+                            class="btn btn-outline-primary btn-block">Sign in With FaceBook</a>
+                        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{request.GET.next}}"
+                            class="btn btn-outline-danger btn-block">Sign in With Google</a>
                     </form>
 
                 </div>
