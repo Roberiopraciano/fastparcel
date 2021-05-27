@@ -165,7 +165,7 @@ def create_job_page(request):
                         creating_job.delivery_address,
                         settings.GOOGLE_MAP_API_KEY,
                     ))
-                    print(r.content)
+
                     print(r.json()['rows'])
 
                     distance = r.json()['rows'][0]['elements'][0]['distance']['value']
@@ -203,26 +203,26 @@ def create_job_page(request):
                     creating_job.save()
 
                     # Send Push Notification to all Couriers
-                   # couriers = Courier.objects.all()
-                   # registration_tokens = [i.fcm_token for i in couriers if i.fcm_token]
+                    couriers = Courier.objects.all()
+                    registration_tokens = [i.fcm_token for i in couriers if i.fcm_token]
 
-                    #message = messaging.MulticastMessage(
-                    #    notification = messaging.Notification(
-                    #        title = creating_job.name,
-                    #        body = creating_job.description,
-                    #    ),
-                    #    webpush = messaging.WebpushConfig(
-                    #        notification = messaging.WebpushNotification(
-                    #            icon = creating_job.photo.url,
-                    #        ),
-                    #        fcm_options = messaging.WebpushFCMOptions(
-                    #            link = settings.NOTIFICATION_URL + reverse('courier:available_jobs'),
-                    #        ),
-                    #    ),
-                    #    tokens = registration_tokens 
-                    #)
-                    #response = messaging.send_multicast(message)
-                    #print('{0} messages were sent successfully'.format(response.success_count))
+                    message = messaging.MulticastMessage(
+                        notification = messaging.Notification(
+                            title = creating_job.name,
+                            body = creating_job.description,
+                        ),
+                        webpush = messaging.WebpushConfig(
+                            notification = messaging.WebpushNotification(
+                                icon = creating_job.photo.url,
+                            ),
+                            fcm_options = messaging.WebpushFCMOptions(
+                                link = settings.NOTIFICATION_URL + reverse('courier:available_jobs'),
+                            ),
+                        ),
+                        tokens = registration_tokens 
+                    )
+                    response = messaging.send_multicast(message)
+                    print('{0} messages were sent successfully'.format(response.success_count))
 
                     return redirect(reverse('customer:home'))
 
@@ -276,7 +276,7 @@ def archived_jobs_page(request):
             Job.CANCELED_STATUS
         ]
     )
-  
+
     return render(request, 'customer/jobs.html', {
         "jobs": jobs
     })

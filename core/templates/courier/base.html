@@ -2,79 +2,76 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Courier | FastParcel</title>
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/logo.png' %}" />
+    <link rel="manifest" href="{% static 'manifest.json' %}" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Courier | FastParcel</title>
-  <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/logo.png' %}">
-  <link rel="manifest" href="{% static 'manifest.json' %}">
+    {% load bootstrap4 %} {% bootstrap_css %} {% bootstrap_javascript jquery='full' %} {% include 'load_firebase.html' %}
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("flutter-first-frame", function () {
+          navigator.serviceWorker.register("flutter_service_worker.js");
+        });
+      }
+    </script>
+    <script>
+      const messaging = firebase.messaging();
+      messaging
+        .getToken({
+          validKey: "BGoFgCoXzD3JCUdAIYkRVyxb_tydqILsVRlsyXrpLFe0NBMM_Bjyk7AnTSiZv_2DYB6IFzS5YBxbqNUMBaa8e8Y",
+        })
+        .then((currentToken) => {
+          console.log(currentToken);
+          if (currentToken) {
+            fetch('{% url "courier:fcm_token_update_api" %}?fcm_token=' + currentToken);
+          }
+        })
+        .catch((err) => {
+          console.log("An error occured while retrieving token. ", err);
+        });
+    </script>
 
-  {% load bootstrap4 %}
-  {% bootstrap_css %}
-  {% bootstrap_javascript jquery='full' %}
+    <script>
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    </script>
 
-  {% include 'load_firebase.html' %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" />
 
-  <script>
-    const messaging = firebase.messaging();
-    messaging
-      .getToken({
-        validKey: "BIwbz-BI__jOMYdeeVGZ3YdceRsaHeP_RP4Mf8tSpvCWkgZOJU-bOucnYVsv50_OfBUTPVxR2plE9N3RBY1LZPk"
-      })
-      .then((currentToken) => {
-        console.log(currentToken);
-        if (currentToken) {
-          fetch('{% url "courier:fcm_token_update_api" %}?fcm_token=' + currentToken);
-        }
-      })
-      .catch((err) => {
-        console.log('An error occured while retrieving token. ', err);
-      })
-  </script>
+    <style>
+      #content {
+        height: calc(var(--vh, 1vh) * 100);
+      }
+    </style>
 
-  <script>
-    let vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  </script>
+    {% block head %}{% endblock %}
+  </head>
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+  <body>
+    <div id="content">{% block content %}{% endblock %}</div>
 
-  <style>
-    #content {
-      height: calc(var(--vh, 1vh) * 100);
-    }
-  </style>
+    <script src="https://unpkg.com/bootoast@1.0.1/dist/bootoast.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/bootoast@1.0.1/dist/bootoast.min.css" />
 
-  {% block head %}{% endblock %}
-</head>
+    <script>
+      function toast(message, type) {
+        bootoast.toast({
+          position: 'centerBottom',
+          message,
+          type,
+        });
+      }
 
-<body>
-  <div id="content">
-    {% block content %}{% endblock %}
-  </div>
+       {% if messages %}
+       {% for message in messages %}
+       toast('{{ message }}', '{{ message.tags }}');
+       {% endfor %}
 
-  <script src="https://unpkg.com/bootoast@1.0.1/dist/bootoast.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/bootoast@1.0.1/dist/bootoast.min.css">
-
-  <script>
-    function toast(message, type) {
-      bootoast.toast({
-        position: 'centerBottom',
-        message,
-        type,
-      });
-    }
-
-    {% if messages %}
-
-    {% for message in messages %}
-    toast('{{ message }}', '{{ message.tags }}');
-    {% endfor %}
-
-    {% endif %}
-  </script>
-</body>
-
+       {% endif %}
+    </script>
+  </body>
 </html>

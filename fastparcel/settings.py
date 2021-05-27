@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-pbmh&&8+#*zdx3@t!-5%&@_4yyr^efygrw69xccav=bq-81ta0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'social_django',
     'core.apps.CoreConfig',
+    'channels',
 
 ]
 
@@ -174,3 +175,25 @@ STRIPE_API_PUBLIC_KEY='pk_test_8q38pqwjhOMc7pkdDIyBjgFg'
 
 
 GOOGLE_MAP_API_KEY='AIzaSyCIRabSZfJYT-Q0U3zwnBoLQi5UtXYYXyI'
+
+PAYPAL_MODE="sandbox"
+PAYPAL_CLIENT_ID="AfgH-igOSmDiXcSJCgUn3noH0F5uI4UmtxjNgGBFbvOu9gqpg7Rcpik_UzkHIBxREllrLcO4rvv5FFQG"
+PAYPAL_CLIENT_SECRET="EPA4l3IXa5W9hGRXUhR7nXIE7-KJf9l30sWddpUf1uiICx-PuxHokII_Ici9Qn8kyAfi5kgoyNu28_ej"
+
+
+NOTIFICATION_URL="https://nameless-spire-45218.herokuapp.com/"
+
+ASGI_APPLICATION = "fastparcel.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+
+# Activate Django Heroku
+import django_on_heroku
+django_on_heroku.settings(locals())
